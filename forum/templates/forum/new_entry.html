@@ -1,0 +1,12 @@
+{% extends "forum/base.html" %}
+{% block head %}
+<title>New Entry</title>
+<h1>New Entry</h1>
+{% endblock head %}
+{% block body %}
+<form action="{% url 'forum:new_entry' topic.id %}" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">Add Entry</button>
+</form>
+{% endblock body %}

@@ -1,0 +1,13 @@
+{% extends "forum/base.html" %}
+{% block head %}
+<title>Home</title>
+<h1>Home</h1>
+{% endblock head %}
+{% block body %}
+<div class="jumbotron">
+	<h1 class="dispaly-3">Forum: Communicate with others.</h1>
+	<hr>
+	<p class="lead">Make an account, ask question, learn new things, discuss all sorts of stuff.</p>
+	<a href="{% url 'users:register' %}" role="button" class="btn btn-lg btn-primary">Register&raquo;</a>
+</div>
+{% endblock body %}
