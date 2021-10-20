@@ -1,1 +1,0 @@
-alert("Staticly served javascript!");

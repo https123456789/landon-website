@@ -1,0 +1,1 @@
+maxUserBadges = 3

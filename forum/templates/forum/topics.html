@@ -4,6 +4,9 @@
 <h1>Topics</h1>
 {% endblock head %}
 {% block body %}
+<h3>
+	<a href="{% url 'forum:new_topic' %}" class="btn btn-primary btn-block" role="button">New Topic</a>
+</h3>
 <ul>
 	{% for topic in topics %}
 		<li>
@@ -17,7 +20,4 @@
 	</li>
 	{% endfor %}
 </ul>
-<h3>
-	<a href="{% url 'forum:new_topic' %}">New Topic</a>
-</h3>
 {% endblock body %}

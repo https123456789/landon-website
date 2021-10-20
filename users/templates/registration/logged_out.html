@@ -1,7 +1,8 @@
 {% extends "forum/base.html" %}
 {% block head %}
 <title>You Have Been Logged Out</title>
-<h1 class="text-danger">You have been logged out.</h1>
+<h1 class="text-danger text-center">You have been logged out.</h1>
 {% endblock head %}
 {% block body %}
+<a href="{% url 'users:login' %}" class="btn btn-primary btn-block" role="button">Log In&raquo;</a>
 {% endblock body %}

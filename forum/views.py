@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
+import sys
+sys.path.append("../../landon-website")
+import globals
 
 def index(request):
 	return render(request, "forum/index.html")
@@ -13,6 +17,8 @@ def topics(request):
 	return render(request, "forum/topics.html", context)
 def topic(request, topic_id):
 	topic = Topic.objects.get(id=topic_id)
+	print(topic.view)
+	topic.view["count"] += 1
 	owner = topic.owner
 	entries = topic.entry_set.order_by("-date_added")
 	for entry in entries:
@@ -23,9 +29,11 @@ def topic(request, topic_id):
 	context = {
 		"topic": topic,
 		"entries": entries,
-		"owner": owner
+		"owner": owner,
+		"view": topic.view
 	}
 	return render(request, "forum/topic.html", context)
+@login_required
 def new_topic(request):
 	currUser = request.user
 	if request.method != "POST":
@@ -39,11 +47,13 @@ def new_topic(request):
 			form.save()
 			topicName = request.POST["text"]
 			topicObj = Topic.objects.get(text = topicName)
+			groups = Group.objects.all()
 			return redirect("forum:topic", topic_id = topicObj.id)
 	context = {
 		"form": form
 	}
 	return render(request, "forum/new_topic.html", context)
+@login_required
 def new_entry(request, topic_id):
 	currUser = request.user
 	topic = Topic.objects.get(id=topic_id)
@@ -78,3 +88,28 @@ def edit_entry(request, entry_id):
 		"form": form
 	}
 	return render(request, "forum/edit_entry.html", context)
+def user(request, user_id):
+	userBadges = []
+	if request.user.groups.filter(name="Admin").exists():
+		userBadges.append({
+			"name": "Admin",
+			"description": "Admin for this site."
+		})
+	if request.user.groups.filter(name="Developer").exists():
+		userBadges.append({
+			"name": "Developer",
+			"description": "Developer for this site."
+		})
+	if request.user.groups.filter(name="Topic Starter").exists():
+		userBadges.append({
+			"name": "Topic Starter",
+			"description": "Create a new topic."
+		})
+	context = {
+		"userBadges": userBadges,
+		"maxUserBadges": globals.maxUserBadges,
+		"userBadgesCount": len(userBadges),
+		"userBadgesPercent": int((len(userBadges) / globals.maxUserBadges) * 100),
+		"userBadgesPercentNotDone": 100 - int((len(userBadges) / globals.maxUserBadges) * 100)
+	}
+	return render(request, "forum/user.html", context)

@@ -24,5 +24,6 @@ urlpatterns = [
 	path("topic/", include("forum.urls")),
 	path("new_topic/", include("forum.urls")),
 	path("new_entry/<int:topic_id>/", include("forum.urls")),
-	path("edit_entry/<int:entry_id>/", include("forum.urls"))
+	path("edit_entry/<int:entry_id>/", include("forum.urls")),
+	path("user/<int:user_id>", include("forum.urls"))
 ]

@@ -1,34 +1,37 @@
 {% extends "forum/base.html" %}
-{% load static %}
-{% block staticArea %}
-<script src="{% static 'forum/progressBar.js' %}"></script>
-{% endblock staticArea %}
 {% block head %}
 <title>{{ topic }}</title>
 <h1>Topic: {{ topic }}</h1>
 <h2>Owned by {{ owner }}</h2>
 {% endblock head %}
 {% block body %}
-<h2>Entries</h2>
+<h2 class="text-center">Posts</h2>
+<div class="pb-3 row">
+	<div class="col-sm-5">
+		{% if user.is_authenticated %}
+			<a href="{% url 'forum:new_entry' topic_id=topic.id %}" class="btn btn-primary btn-block" role="button">New Post</a>
+		{% endif %}
+	</div>
+	<div class="col-sm-5">
+		<p class="text-center">This page has been viewed {{ view.count }} times.</p>
+	</div>
+</div>
 <ul>
 	{% for entry in entries %}
 		<div class="card mb-3">
 			<h4 class="card-header">{{ entry.date_added | date:"M d, Y H:i" }}</h4>
-			{% if entry.userIsOwner %}
-				<small>
-					<a href="{% url 'forum:edit_entry' entry_id=entry.id %}">Edit</a>
-				</small>
-			{% endif %}
 			<div class="card-body">
 				{{ entry.text | linebreaks }}
 			</div>
 			<div class="text-right">
 				<h2 class="badge badge-secondary">{{ entry.owner }}</h2>
 			</div>
+			{% if entry.userIsOwner %}
+				<a href="{% url 'forum:edit_entry' entry_id=entry.id %}" class="btn btn-outline-primary" role="button">Edit</a>
+			{% endif %}
 		</div>
 	{% empty %}
 		<li>There are no entries for this topic.</li>
 	{% endfor %}
 </ul>
-<a href="{% url 'forum:new_entry' topic_id=topic.id %}">New Entry</a>
 {% endblock body %}
