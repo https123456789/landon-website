@@ -49,6 +49,9 @@ def new_topic(request):
 			topicName = request.POST["text"]
 			topicObj = Topic.objects.get(text = topicName)
 			groups = Group.objects.all()
+			group = groups.get(text="Topic Starter")
+			request.user.groups.add(group)
+			request.user.save()
 			return redirect("forum:topic", topic_id = topicObj.id)
 	context = {
 		"form": form
