@@ -19,6 +19,7 @@ def topic(request, topic_id):
 	topic = Topic.objects.get(id=topic_id)
 	print(topic.view)
 	topic.view["count"] += 1
+	topic.save()
 	owner = topic.owner
 	entries = topic.entry_set.order_by("-date_added")
 	for entry in entries:
