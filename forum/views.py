@@ -10,7 +10,7 @@ import globals
 def index(request):
 	return render(request, "forum/index.html")
 def topics(request):
-	topics = Topic.objects.all().sort(reverse = True)
+	topics = Topic.objects.all()#.sort(reverse = True)
 	context = {
 		"topics": topics
 	}

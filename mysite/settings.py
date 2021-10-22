@@ -33,7 +33,7 @@ STATIC_URL = "/static/"
 # Application definition
 
 INSTALLED_APPS = [
-	# Forum
+	# Mine
 	"forum",
 	"users",
 
